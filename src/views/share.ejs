@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Share Created — MiniDrive</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      :root {
+        --primary-color: #ea2a33;
+        --secondary-color: #f7f7f7;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex min-h-screen flex-col">
+      <!-- Header -->
+      <header
+        class="flex items-center justify-between border-b border-gray-200 px-8 py-4 bg-white"
+      >
+        <div class="flex items-center gap-2 text-gray-800">
+          <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12"
+            style="background-image: url('<%= avatarUrl %>')"
+          ></div>
+          <h2 class="text-xl font-bold tracking-tight">MiniDrive</h2>
+        </div>
+        <div class="text-sm text-gray-600">Create Share Link | Press Copy</div>
+      </header>
+
+      <!-- Main -->
+      <main class="flex-1 bg-white">
+        <div class="mx-auto max-w-2xl px-4 py-16 text-center">
+          <h1 class="text-2xl font-bold text-gray-900 mb-4">
+            Your share link is ready
+          </h1>
+          <p class="text-gray-600 mb-8">
+            Copy this link and send it to anyone you want to share your folder
+            with.
+          </p>
+
+          <!-- Share link box -->
+          <div
+            class="flex items-center gap-2 border border-gray-300 rounded-lg p-2 bg-gray-50"
+          >
+            <input
+              id="shareUrl"
+              type="text"
+              readonly
+              value="<%= shareUrl %>"
+              class="flex-1 bg-transparent text-gray-800 text-sm px-2 outline-none"
+            />
+            <button
+              onclick="copyLink()"
+              class="flex items-center gap-1 rounded-md bg-[var(--primary-color)] px-3 py-2 text-sm font-medium text-white hover:bg-red-700 transition"
+            >
+              <span class="material-symbols-outlined text-sm"
+                >content_copy</span
+              >
+              Copy
+            </button>
+          </div>
+
+          <!-- Back button -->
+          <div class="mt-10">
+            <a
+              href="/dashboard"
+              class="inline-flex items-center rounded-full bg-gray-200 px-5 py-2 text-sm font-medium text-gray-800 hover:bg-gray-300 transition"
+            >
+              ← Back to Dashboard
+            </a>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function copyLink() {
+        const input = document.getElementById("shareUrl");
+        input.select();
+        input.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(input.value);
+        alert("Share link copied!");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Folders — MiniDrive</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style type="text/tailwindcss">
+      :root {
+        --primary-color: #ea2a33;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 font-sans text-gray-900">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="flex flex-col w-64 bg-white border-r border-gray-200 p-4">
+        <div class="flex items-center gap-3 mb-8">
+          <div
+            class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12"
+            style="background-image: url('<%= avatarUrl %>')"
+          ></div>
+          <h1 class="text-gray-800 text-lg font-semibold">
+            <%= user ? user.name : "Guest" %>
+          </h1>
+        </div>
+        <nav class="flex flex-col gap-2">
+          <a
+            href="/dashboard"
+            class="flex items-center gap-3 px-4 py-2 rounded-full hover:bg-gray-100 text-gray-700"
+          >
+            <span class="material-symbols-outlined">home</span>
+            <p class="text-sm font-medium">Home</p>
+          </a>
+          <a
+            href="/files"
+            class="flex items-center gap-3 px-3 py-2 rounded-full hover:bg-gray-100 text-gray-700"
+          >
+            <span class="material-symbols-outlined">description</span>
+            <p class="text-sm font-medium">Files</p>
+          </a>
+          <a
+            href="/logout"
+            class="flex items-center gap-3 rounded-lg px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          >
+            <span class="material-symbols-outlined">logout</span>
+            <span class="font-medium">Logout</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-8">
+        <!-- Breadcrumb -->
+        <div class="flex justify-between items-center mb-6">
+          <div class="text-sm text-gray-600">
+            <a href="/dashboard" class="hover:underline">My Drive</a> /
+            <strong class="text-gray-800">Folders</strong>
+          </div>
+        </div>
+
+        <!-- Folders List -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <% if (folders.length === 0) { %>
+          <div class="col-span-full text-center text-gray-500">
+            No folders yet. Create one to get started.
+          </div>
+          <% } else { %> <% folders.forEach(folder => { %>
+          <div
+            class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6"
+          >
+            <!-- Folder Header -->
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-bold text-gray-800">
+                <a href="/folders/<%= folder.id %>" class="hover:underline"
+                  ><%= folder.name %></a
+                >
+              </h2>
+              <a
+                href="/folders/<%= folder.id %>/share"
+                class="flex items-center justify-center rounded-full h-8 bg-[var(--primary-color)] text-white px-3 text-xs font-bold hover:bg-red-700 transition"
+              >
+                <span class="material-symbols-outlined text-sm">share</span>
+                Share
+              </a>
+            </div>
+            <!-- Files Table -->
+            <div class="overflow-x-auto border rounded-lg">
+              <table class="w-full text-sm text-left text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th class="px-4 py-2 font-semibold">Name</th>
+                    <th class="px-4 py-2 font-semibold">Size</th>
+                    <th class="px-4 py-2 font-semibold">Uploaded</th>
+                    <th class="px-4 py-2">
+                      <span class="sr-only">Actions</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (!folder.files || folder.files.length === 0) { %>
+                  <tr>
+                    <td colspan="4" class="px-4 py-3 text-center text-gray-500">
+                      No files found in this folder.
+                    </td>
+                  </tr>
+                  <% } else { %> <% folder.files.forEach(file => { %>
+                  <tr class="bg-white border-b hover:bg-gray-50">
+                    <td
+                      class="px-4 py-3 font-medium text-gray-900 flex items-center gap-2"
+                    >
+                      <span class="material-symbols-outlined text-gray-500"
+                        >insert_drive_file</span
+                      >
+                      <a href="/file/<%= file.id %>" class="hover:underline"
+                        ><%= file.name %></a
+                      >
+                    </td>
+                    <td class="px-4 py-3">
+                      <%= Math.round(file.size/1024) %> KB
+                    </td>
+                    <td class="px-4 py-3">
+                      <%= file.uploadedAt.toLocaleDateString() %>
+                    </td>
+                    <td class="px-4 py-3 text-right">
+                      <button class="text-gray-500 hover:text-gray-900">
+                        <span class="material-symbols-outlined"
+                          >more_horiz</span
+                        >
+                      </button>
+                    </td>
+                  </tr>
+                  <% }) %> <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <% }) %> <% } %>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

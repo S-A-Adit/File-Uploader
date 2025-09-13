@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dashboard — MiniDrive</title>
+    <link rel="icon" href="data:image/x-icon;base64," type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?display=swap&family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-50 text-gray-800">
+    <div
+      class="relative flex min-h-screen flex-col"
+      style="font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif"
+    >
+      <!-- Toolbar -->
+      <header
+        class="flex justify-between items-center mb-6 p-4 border-b border-gray-200"
+      >
+        <div class="flex items-center gap-3">
+          <img
+            alt="<%= user?.name || 'User' %>"
+            class="w-10 h-10 rounded-full"
+            src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(user?.name || 'U') %>"
+          />
+          <h1 class="text-gray-900 text-base font-bold">MiniDrive</h1>
+        </div>
+        <div class="flex items-center gap-4">
+          <a
+            href="/upload"
+            class="flex items-center justify-center rounded-full h-10 bg-red-600 text-white gap-2 text-sm font-bold px-4 hover:bg-red-700 transition-colors cursor-pointer"
+          >
+            <span class="material-symbols-outlined">cloud_upload</span>
+            <span class="truncate">Upload</span>
+          </a>
+        </div>
+      </header>
+
+      <div class="flex h-full grow">
+        <!-- Sidebar -->
+        <aside
+          class="w-56 border-r border-gray-200 flex flex-col p-4 space-y-4"
+        >
+          <nav class="flex flex-col gap-2">
+            <!-- Dashboard -->
+            <a
+              href="/dashboard"
+              class="flex items-center gap-3 px-3 py-2 rounded-full hover:bg-gray-100 text-gray-700"
+            >
+              <span class="material-symbols-outlined">home</span>
+              <p class="text-sm font-medium">Home</p>
+            </a>
+
+            <!-- Folders -->
+            <a
+              href="/folders"
+              class="flex items-center gap-3 px-3 py-2 rounded-full hover:bg-gray-100 text-gray-700"
+            >
+              <span class="material-symbols-outlined">folder</span>
+              <p class="text-sm font-medium">Folders</p>
+            </a>
+
+            <!-- Files -->
+            <a
+              href="/files"
+              class="flex items-center gap-3 px-3 py-2 rounded-full hover:bg-gray-100 text-gray-700"
+            >
+              <span class="material-symbols-outlined">description</span>
+              <p class="text-sm font-medium">Files</p>
+            </a>
+
+            <!-- Add Folder -->
+            <button
+              onclick="openFolderModal()"
+              class="flex items-center gap-3 px-3 py-2 rounded-full hover:bg-gray-100 text-gray-700"
+            >
+              <span class="material-symbols-outlined">create_new_folder</span>
+              <p class="text-sm font-medium">Add Folder</p>
+            </button>
+            <a
+              href="/logout"
+              class="flex items-center gap-3 rounded-lg px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+            >
+              <span class="material-symbols-outlined">logout</span>
+              <span class="font-medium">Logout</span>
+            </a>
+            <!-- Folder Modal -->
+            <div
+              id="folderModal"
+              class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
+            >
+              <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+                <h2 class="text-lg font-semibold mb-4">Create New Folder</h2>
+                <form action="/folders/create" method="POST">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Folder Name"
+                    class="w-full border border-gray-300 rounded-lg p-2 mb-4"
+                    required
+                  />
+                  <div class="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onclick="closeFolderModal()"
+                      class="px-4 py-2 bg-gray-300 rounded-lg"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      class="px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    >
+                      Create
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <script>
+              function openFolderModal() {
+                document
+                  .getElementById("folderModal")
+                  .classList.remove("hidden");
+              }
+              function closeFolderModal() {
+                document.getElementById("folderModal").classList.add("hidden");
+              }
+            </script>
+          </nav>
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1 p-6">
+          <!-- Files & Folders table -->
+          <div
+            class="overflow-x-auto rounded-xl border border-gray-200 bg-white"
+          >
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Name
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Folder
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Uploaded
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Size
+                  </th>
+                  <th class="relative px-6 py-3">
+                    <span class="sr-only">Actions</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <!-- Show files -->
+                <% files.forEach(function(file){ %>
+                <tr>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap flex items-center gap-3"
+                  >
+                    <span class="material-symbols-outlined text-blue-500"
+                      >description</span
+                    >
+                    <a
+                      href="/files/<%= file.id %>"
+                      class="font-medium text-gray-900"
+                      ><%= file.name %></a
+                    >
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                    <%= file.folder ? file.folder.name : "Root" %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                    <%= file.uploadedAt.toLocaleDateString() %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                    <%= Math.round(file.size / 1024) %> KB
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                  >
+                    <a
+                      href="/files/<%= file.id %>"
+                      class="text-gray-500 hover:text-red-600"
+                    >
+                      <span class="material-symbols-outlined">more_horiz</span>
+                    </a>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>

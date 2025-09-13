@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String    // hashed
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  folders   Folder[]
+  files     File[]     // 👈 opposite side of File.user
+}
+
+model Folder {
+  id          Int         @id @default(autoincrement())
+  name        String
+  createdAt   DateTime    @default(now())
+  userId Int
+  user   User       @relation(fields: [userId], references: [id])
+  files  File[]
+
+  shareLinks ShareLink[]  // 👈 opposite side of ShareLink.folder
+}
+
+model File {
+  id         Int       @id @default(autoincrement())
+  name       String
+  size       Int
+  url        String
+  uploadedAt DateTime  @default(now())
+
+  folderId Int?
+  folder   Folder?   @relation(fields: [folderId], references: [id])
+
+  userId   Int
+  user     User      @relation(fields: [userId], references: [id])
+}
+
+model ShareLink {
+  id        String   @id @default(uuid())
+  folderId  Int
+  folder    Folder   @relation(fields: [folderId], references: [id]) // points back to Folder
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+model Session {
+  id        String   @id @default(cuid())  // Keep this for the library
+  sid       String   @unique              // Add this for your needs
+  data      String   @db.Text
+  expiresAt DateTime
+}
