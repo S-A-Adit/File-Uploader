@@ -113,7 +113,7 @@ exports.getFolders = async (req, res) => {
       orderBy: { createdAt: "desc" },
     });
 
-    res.render("folders", {
+    res.render("folder", {
       user: req.user,
       folders,
       avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(
