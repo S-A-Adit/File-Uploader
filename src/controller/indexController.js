@@ -4,10 +4,16 @@ const fs = require("fs");
 const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadDir = path.join("/tmp", "uploads");
+    const folderId = req.body.destination
+      ? parseInt(req.body.destination)
+      : null;
+    const folderSegment = folderId ? `folder-${folderId}` : "root";
+    const uploadDir = path.join("/tmp/uploads", folderSegment);
+
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
+
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
@@ -16,7 +22,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
+exports.uploadMiddleware = upload.single("file");
 exports.getIndex = (req, res) => {
   if (req.isAuthenticated()) {
     // user is logged in → redirect to dashboard
@@ -69,15 +75,20 @@ exports.uploadFile = async (req, res) => {
     console.log("Body received:", req.body);
     console.log("User received:", req.user);
 
-    const { folderId } = req.body;
-    // Update the URL to match temporary storage
-    const fileUrl = `/tmp/uploads/${req.file.filename}`;
+    // Use destination from frontend
+    const folderId = req.body.destination
+      ? parseInt(req.body.destination)
+      : null;
+
+    // Generate file URL (temporary /tmp path for Render Free plan)
+    const folderSegment = folderId ? `folder-${folderId}` : "root";
+    const fileUrl = `/tmp/uploads/${folderSegment}/${req.file.filename}`;
 
     await prisma.file.create({
       data: {
         name: req.file.originalname,
         size: req.file.size,
-        folderId: folderId ? parseInt(folderId) : null,
+        folderId: folderId,
         userId: req.user?.id || 1, // TEMP: replace 1 with a test user if needed
         url: fileUrl,
       },
