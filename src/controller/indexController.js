@@ -1,5 +1,6 @@
 const prisma = require("../config/db"); // assuming src/db.js exports new PrismaClient()
 const multer = require("multer");
+const fs = require("fs");
 const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
