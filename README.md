@@ -169,6 +169,8 @@ router.get("/file/:id", ensureAuth, getFileDetails);
 
 **📂 Increase file size limits**
 **🗑️ Delete files**
+**🗑️ Preview for files when file detail is checked**
+**🔗 The share link does not get the fiel at the moment**
 **🔗 Share files & collaborate**
 **📝 Allow editing, commenting, and activity tracking**
 **📝 Provide a Tree Structure so that folders can be created within folders**
