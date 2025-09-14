@@ -23,6 +23,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 exports.uploadMiddleware = upload.single("file");
+
 exports.getIndex = (req, res) => {
   if (req.isAuthenticated()) {
     // user is logged in → redirect to dashboard
