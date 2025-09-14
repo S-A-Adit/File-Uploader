@@ -69,7 +69,9 @@ exports.uploadFile = async (req, res) => {
     console.log("User received:", req.user);
 
     const { folderId } = req.body;
-    const fileUrl = `/uploads/${req.file.filename}`;
+    // Update the URL to match temporary storage
+    const fileUrl = `/tmp/uploads/${req.file.filename}`;
+
     await prisma.file.create({
       data: {
         name: req.file.originalname,
