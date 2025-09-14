@@ -108,14 +108,14 @@ exports.getFolders = async (req, res) => {
     const folders = await prisma.folder.findMany({
       where: { userId: req.user.id },
       include: {
-        _count: { select: { files: true } }, // just the counts
+        files: true, // ✅ include files
       },
       orderBy: { createdAt: "desc" },
     });
 
     res.render("folder", {
       user: req.user,
-      folders,
+      folders, // ✅ folders now have files
       avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(
         req.user?.name || "U"
       )}`,
@@ -123,31 +123,6 @@ exports.getFolders = async (req, res) => {
   } catch (err) {
     console.error("Error fetching folders:", err);
     res.status(500).send("Error fetching folders");
-  }
-};
-exports.getFolder = async (req, res) => {
-  try {
-    const folderId = parseInt(req.params.id, 10);
-
-    const folder = await prisma.folder.findUnique({
-      where: { id: folderId },
-      include: { files: true }, // <-- fetch files inside
-    });
-
-    if (!folder) {
-      return res.status(404).send("Folder not found");
-    }
-
-    res.render("folder", {
-      user: req.user,
-      folder,
-      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(
-        req.user?.name || "U"
-      )}`,
-    });
-  } catch (err) {
-    console.error("Error fetching folder:", err);
-    res.status(500).send("Error fetching folder");
   }
 };
 
