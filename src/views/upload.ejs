@@ -65,8 +65,9 @@
               </p>
             </div>
 
-            <!-- Destination folder -->
+            <!-- ✅ Single form for everything -->
             <form action="/upload" method="POST" enctype="multipart/form-data">
+              <!-- Destination folder -->
               <div class="mb-6">
                 <label
                   for="destination"
@@ -90,46 +91,34 @@
                   <% } %>
                 </select>
               </div>
+
               <!-- Drag & Drop zone -->
               <div
                 class="flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed border-gray-300 p-12 text-center bg-gray-50/50"
               >
-                <form
-                  action="/upload"
-                  method="POST"
-                  enctype="multipart/form-data"
-                  class="flex flex-col items-center gap-3 border-2 border-dashed border-gray-400 p-6 rounded-lg"
+                <p class="text-lg font-bold">Drag and drop files here</p>
+                <p class="text-gray-500 text-sm">or</p>
+
+                <!-- Hidden file input -->
+                <input type="file" name="file" id="fileInput" class="hidden" />
+
+                <!-- Styled label that opens file picker -->
+                <label
+                  for="fileInput"
+                  class="cursor-pointer flex items-center justify-center size-16 bg-gray-200 rounded-full hover:bg-gray-300"
                 >
-                  <p class="text-lg font-bold">Drag and drop files here</p>
-                  <p class="text-gray-500 text-sm">or</p>
-
-                  <!-- Hidden file input -->
-                  <input
-                    type="file"
-                    name="file"
-                    id="fileInput"
-                    class="hidden"
-                  />
-
-                  <!-- Styled label that opens file picker -->
-                  <label
-                    for="fileInput"
-                    class="cursor-pointer flex items-center justify-center size-16 bg-gray-200 rounded-full hover:bg-gray-300"
+                  <span class="material-symbols-outlined text-3xl text-gray-600"
+                    >upload</span
                   >
-                    <span
-                      class="material-symbols-outlined text-3xl text-gray-600"
-                      >upload</span
-                    >
-                  </label>
+                </label>
 
-                  <!-- Upload button styled same as circle -->
-                  <button
-                    type="submit"
-                    class="mt-3 rounded-full h-12 px-6 bg-red-600 text-white text-sm font-bold hover:bg-red-700"
-                  >
-                    Upload
-                  </button>
-                </form>
+                <!-- Upload button styled same as circle -->
+                <button
+                  type="submit"
+                  class="mt-3 rounded-full h-12 px-6 bg-red-600 text-white text-sm font-bold hover:bg-red-700"
+                >
+                  Upload
+                </button>
               </div>
             </form>
           </div>
