@@ -108,12 +108,13 @@ exports.getFolders = async (req, res) => {
     const folders = await prisma.folder.findMany({
       where: { userId: req.user.id },
       include: {
-        _count: { select: { files: true } }, // count files in each folder
+        _count: { select: { files: true } }, // ✅ count files in each folder
       },
       orderBy: { createdAt: "desc" },
     });
 
-    res.render("folder", {
+    res.render("folders", {
+      // ✅ render folders list view, not single folder
       user: req.user,
       folders,
       avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -121,7 +122,7 @@ exports.getFolders = async (req, res) => {
       )}`,
     });
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching folders:", err);
     res.status(500).send("Error fetching folders");
   }
 };

@@ -64,7 +64,7 @@
 
         <!-- Folders List -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <% if (folders.length === 0) { %>
+          <% if (!folders || folders.length === 0) { %>
           <div class="col-span-full text-center text-gray-500">
             No folders yet. Create one to get started.
           </div>
@@ -75,9 +75,9 @@
             <!-- Folder Header -->
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-lg font-bold text-gray-800">
-                <a href="/folders/<%= folder.id %>" class="hover:underline"
-                  ><%= folder.name %></a
-                >
+                <a href="/folders/<%= folder.id %>" class="hover:underline">
+                  <%= folder.name %>
+                </a>
               </h2>
               <a
                 href="/folders/<%= folder.id %>/share"
@@ -87,6 +87,7 @@
                 Share
               </a>
             </div>
+
             <!-- Files Table -->
             <div class="overflow-x-auto border rounded-lg">
               <table class="w-full text-sm text-left text-gray-500">
@@ -112,15 +113,15 @@
                     <td
                       class="px-4 py-3 font-medium text-gray-900 flex items-center gap-2"
                     >
-                      <span class="material-symbols-outlined text-gray-500"
-                        >insert_drive_file</span
-                      >
-                      <a href="/file/<%= file.id %>" class="hover:underline"
-                        ><%= file.name %></a
-                      >
+                      <span class="material-symbols-outlined text-gray-500">
+                        insert_drive_file
+                      </span>
+                      <a href="/file/<%= file.id %>" class="hover:underline">
+                        <%= file.name %>
+                      </a>
                     </td>
                     <td class="px-4 py-3">
-                      <%= Math.round(file.size/1024) %> KB
+                      <%= Math.round(file.size / 1024) %> KB
                     </td>
                     <td class="px-4 py-3">
                       <%= file.uploadedAt.toLocaleDateString() %>
