@@ -123,11 +123,24 @@
                     <td class="px-4 py-3">
                       <%= Math.round(file.size / 1024) %> KB
                     </td>
+                    <td class="px-4 py-3">
+                      <%= file.uploadedAt ? file.uploadedAt.toLocaleDateString()
+                      : "-" %>
+                    </td>
+                    <td class="px-4 py-3 text-right">
+                      <button class="text-gray-500 hover:text-gray-900">
+                        <span class="material-symbols-outlined"
+                          >more_horiz</span
+                        >
+                      </button>
+                    </td>
                   </tr>
+                  <% }) %> <% } %>
                 </tbody>
               </table>
             </div>
           </div>
+          <% }) %> <% } %>
         </div>
       </main>
     </div>
