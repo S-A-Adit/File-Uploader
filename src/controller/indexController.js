@@ -113,7 +113,7 @@ exports.getFolders = async (req, res) => {
       orderBy: { createdAt: "desc" },
     });
 
-    res.render("folders", {
+    res.render("folder", {
       // ✅ render folders list view, not single folder
       user: req.user,
       folders,
