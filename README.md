@@ -14,6 +14,10 @@ Mini-Drive is a simple yet powerful cloud storage solution that allows users to:
 
 ---
 
+## 🚀 Live Demo
+
+[Try it here](https://mini-drive-o1xn.onrender.com/)
+
 ## ✨ Features
 
 - ✅ Signup & Login Authentication (with Passport.js)
